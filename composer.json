@@ -1,5 +1,12 @@
 {
     "autoload": {
         "psr-4": {"App\\": "src/"}
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.3"
+    },
+    "require": {
+        "symfony/routing": "^5.3",
+        "symfony/http-foundation": "^5.3"
     }
 }

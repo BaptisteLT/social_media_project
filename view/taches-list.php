@@ -5,6 +5,8 @@
 <p>Liste des tâches</h1>
 <a href="new-tache.php">Créer une tâche</a>
 
+<a href="login.php">Se login</a>
+
 
 
 <?php
@@ -33,6 +35,19 @@ foreach ($taches as $tache)
     echo '<a href="view-tache.php?id='.$tache[4].'">En savoir plus</a>';
     echo'</div>';
 }
+
+if(isset($_COOKIE["tache"]))
+{
+    $cookie = json_decode($_COOKIE["tache"]);
+    echo'<div style="border: 1px solid black">';
+    $completeOrNot = trim($cookie[3]);
+    echo '<h3>'.$cookie[0]. ($completeOrNot === "0" ? ' (Incomplète)' : ' (Complète)') .'</h3>';//titre
+    echo '<p>'.$cookie[1].'</p>';//description
+    echo '<p>Priorité: '.$cookie[2].'</p>';
+    echo'</div>';
+}
+
+
 
 ?>
 

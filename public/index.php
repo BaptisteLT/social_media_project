@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //Important to load classes, controllers etc
 require  dirname(__DIR__). '/vendor/autoload.php';
     
@@ -10,15 +12,19 @@ if($path==='/')
 {
     include_once(dirname(__DIR__). '/view/taches-list.php');
 }
+
 //If the url doesn't have .php
 if(!strpos($path,'.php'))
 {
+    
     //We verify if the file exists and we add .php
     if(!file_exists(dirname(__DIR__).'/view'.$path.'.php'))
     {
-        //it doesn't exist so we redirect to error404 not found page
-        include_once(dirname(__DIR__). '/view/error404.php');
-        exit;
+        if($path != '/')
+        {
+            //it doesn't exist so we redirect to error404 not found page
+            include_once(dirname(__DIR__). '/view/error404.php');
+        }
     }
     else
     {
@@ -29,7 +35,8 @@ if(!strpos($path,'.php'))
 //Else the url already has .php
 else
 {
-    //Ifthe file doesn't exist
+    
+    //If the file doesn't exist
     if(!file_exists(dirname(__DIR__).'/view'.$path))
     {
         //it doesn't exist so we redirect to error404 not found page
@@ -38,6 +45,7 @@ else
     }
     //Else we redirect to the page
     else{
+        
         include_once(dirname(__DIR__). '/view'.$path);
     }
 }
