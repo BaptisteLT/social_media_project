@@ -20,9 +20,9 @@ try {
     extract($matcher->match($request->getPathInfo()), EXTR_SKIP);
     
     ob_start();
-    include __DIR__.'/../view/header.php';
+    //include __DIR__.'/../view/header.php';
     include sprintf(__DIR__.'/../view/%s.php', $_route);
-    include __DIR__.'/../view/footer.php';
+    //include __DIR__.'/../view/footer.php';
     $response = new Response(ob_get_clean());
 } catch (ResourceNotFoundException $exception) {
     $response = new Response('Not Found', 404);
