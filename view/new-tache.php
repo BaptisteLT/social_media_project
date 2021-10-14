@@ -2,13 +2,15 @@
 <?php
     use App\controller\TacheController;
 use App\DatabaseConnect\PDOSingleton;
+use Symfony\Component\HttpFoundation\Request;
 
-$instance = PDOSingleton::getInstance();
-$conn = $instance->getConnection();
+/*$instance = PDOSingleton::getInstance();
+$conn = $instance->getConnection();*/
 
-    
+    $request = new Request();    
+
     $tacheController = new TacheController;
-    $tacheController = $tacheController->newTache();
+$tacheController = $tacheController->newTache($request);
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +18,7 @@ $conn = $instance->getConnection();
 <body>
 
 <p>Liste des tâches</h1>
-<a href="new-tache.php">Créer une tâche</a>
+<a href="<?php $urlGenerator->generate('new-tache')?>">Créer une tâche</a>
 
 <form method="post">
 

@@ -46,7 +46,7 @@ echo '<h3>'.($completeOrNot === "0" ? ' La tâche est encore à faire !' : ' La 
 
 
 
-echo '<a href="taches-list.php">Retour à la liste</a>';
+echo '<a href="taches-list">Retour à la liste</a>';
 echo '<p> ou </p>';
-echo '<a href="new-tache.php">Créer une autre tâche</a>';
+echo '<a href="new-tache">Créer une autre tâche</a>';
 

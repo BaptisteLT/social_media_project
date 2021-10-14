@@ -1,11 +1,11 @@
 <?php
 namespace App\controller;
 
-use App\Entity\Formulaire;
 use dump;
+use App\Entity\Mage;
+use App\Entity\Formulaire;
 use App\Entity\Personnage;
 use App\Entity\Formulaire2;
-use App\Entity\Mage;
 
 class TacheController
 {
@@ -14,7 +14,8 @@ class TacheController
     
     public function newTache()
     {
-
+        
+        //var_dump($_GET['name']);die;
 
         if(isset($_POST['titre']) && isset($_POST['titre']) != '' &&
         isset($_POST['description']) && isset($_POST['description']) != '' &&
@@ -67,6 +68,8 @@ class TacheController
 
     public function listeTaches()
     {
+
+
         if(isset($_POST['titre']) && isset($_POST['titre']) != '' &&
         isset($_POST['description']) && isset($_POST['description']) != '' &&
         isset($_POST['priorite']) && isset($_POST['priorite']) != '')

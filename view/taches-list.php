@@ -11,9 +11,9 @@
 
         <div class="container">
             <p>Liste des tâches</h1>
-            <a href="new-tache.php">Créer une tâche</a>
-
-            <a href="login.php">Se login</a>
+            <a href="<?= $urlGenerator->generate('new-tache')?>">Créer une tâche</a>
+            <!--$urlGenerator->generate('show',['id'=>$id])-->
+            <a href="<?= $urlGenerator->generate('login')?>">Se login</a>
 
 
 
@@ -40,7 +40,7 @@
                 echo '<p>'.$tache[1].'</p>';//description
                 echo '<p>Priorité: '.$tache[2].'</p>';
 
-                echo '<a href="view-tache.php?id='.$tache[4].'">En savoir plus</a>';
+                echo '<a href="'. $urlGenerator->generate('view-tache',['id'=>$tache[4]]).'">En savoir plus</a>';
                 echo'</div>';
             }
 
