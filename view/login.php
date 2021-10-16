@@ -1,40 +1,35 @@
 <?php
-    // The plain text password to be hashed
-    $plaintext_password = "toto";
-    $email = "toto@toto.fr";
-  
-    // The hash of the password that
-    // can be stored in the database
-    $hash = password_hash($plaintext_password, 
-          PASSWORD_DEFAULT);
-  
 
-    if(isset($_POST['password']) && isset($_POST['email']))
-    {
-        if(password_verify($_POST['password'],$hash) && $_POST['email'] == $email)
-        {
-            $_SESSION['email'] = $_POST['email'];
-            var_dump($_SESSION);die;
-        }
-        else
-        {
-            die('NOPE');
-        }
-        
-    }
+    use App\controller\SecurityController;
+    $securityController = new SecurityController;
+    $securityController = $securityController->login();
 ?>
 
 <!DOCTYPE html>
 <html>
+<head>
+<?php include 'head.php' ?>
+<link rel="stylesheet" href="css/login.css">
+</head>
 <body>
-<form method="POST">
-    <label>Email</label>
-    <input type="text" name="email">
-    <label>Password</label>
-    <input type="text" name="password">
-
-    <input type="submit" value="Se connecter">
-</form>
-
+    <?php include 'header.php'; ?>
+    <div class="container">
+        <div id="form-container">
+            <div class="row" id="login-form">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="text" name="password" class="form-control" required>
+                    </div>
+                    <input type="submit" class="btn btn-primary mb-3" value="Se connecter">
+                </form>
+            </div>
+        </div>
+    </div>
+    <?php include 'footer.php'; ?>
 </body>
 </html>

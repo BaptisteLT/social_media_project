@@ -8,9 +8,9 @@ class PDOSingleton{
     private static $instance = null;
     private $conn;
 
-    private string $dsn = 'mysql:dbname=exercice;host=127.0.0.1;port=3306';
-    private string $username ='root';
-    private string $password ='';
+    private string $dsn = DSN;//'mysql:dbname=exercice;host=127.0.0.1;port=3306';
+    private string $username =DB_USER;//'root';
+    private string $password =DB_PASSWORD;//'';
     private array $options;
 
     private function __construct()
