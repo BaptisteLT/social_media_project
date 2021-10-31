@@ -17,18 +17,6 @@ class Post{
     }
 
     /**
-     * Set the value of id
-     *
-     * @return  self
-     */ 
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * Get the value of comment
      */ 
     public function getComment()
