@@ -2,8 +2,11 @@
 namespace App\Entity;
 
 class User{
+    private $id;
     private $username;
     private $password;
+
+    const TABLE_NAME = 'utilisateur';
 
     public function __contruct($username,$password)
     {
@@ -11,6 +14,7 @@ class User{
         $this->password = $password;
     }
 
+    
     /**
      * Get the value of password
      */ 
@@ -58,5 +62,25 @@ class User{
     public function verifyPassword($password)
     {
         return password_verify($password, $this->password);
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

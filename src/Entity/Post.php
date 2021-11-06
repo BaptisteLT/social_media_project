@@ -11,6 +11,15 @@ class Post{
     /**
      * Get the value of id
      */ 
+    public function setId()
+    {
+        return $this->id;
+    }
+
+
+    /**
+     * Get the value of id
+     */ 
     public function getId()
     {
         return $this->id;
@@ -39,7 +48,7 @@ class Post{
     /**
      * Get the value of created_at
      */ 
-    public function getCreated_at()
+    public function getCreatedAt()
     {
         return $this->created_at;
     }
@@ -49,7 +58,7 @@ class Post{
      *
      * @return  self
      */ 
-    public function setCreated_at($created_at)
+    public function setCreatedAt($created_at)
     {
         $this->created_at = $created_at;
 
@@ -59,7 +68,7 @@ class Post{
     /**
      * Get the value of updated_at
      */ 
-    public function getUpdated_at()
+    public function getUpdatedAt()
     {
         return $this->updated_at;
     }
@@ -69,7 +78,7 @@ class Post{
      *
      * @return  self
      */ 
-    public function setUpdated_at($updated_at)
+    public function setUpdatedAt($updated_at)
     {
         $this->updated_at = $updated_at;
 
@@ -79,7 +88,7 @@ class Post{
     /**
      * Get the value of created_by
      */ 
-    public function getCreated_by()
+    public function getCreatedBy()
     {
         return $this->created_by;
     }
@@ -89,7 +98,7 @@ class Post{
      *
      * @return  self
      */ 
-    public function setCreated_by($created_by)
+    public function setCreatedBy($created_by)
     {
         $this->created_by = $created_by;
 

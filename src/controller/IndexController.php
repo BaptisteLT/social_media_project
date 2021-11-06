@@ -16,7 +16,8 @@ class IndexController
 
     public function index()
     {
-        $posts = $this->postRepository->findAllPosts();
-        var_dump($posts);die;
+        return [
+            'posts'=>$posts = $this->postRepository->findAllPosts()
+        ];
     }
 }
