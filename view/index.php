@@ -29,7 +29,7 @@
             </form>
         </div>
     </div>
-
+    
     <div class="container">
         <div class="justify-content-center">
             <div class="row">
@@ -64,6 +64,25 @@
         //LA
 
         modal.style.display = "none";
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "<?= $urlGenerator->generate('createPostApi')?>",
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (data) {
+                $("#output").text(data);
+                console.log("SUCCESS : ", data);
+                $("#btnSubmit").prop("disabled", false);
+            },
+            error: function (e) {
+                $("#output").text(e.responseText);
+                console.log("ERROR : ", e);
+                $("#btnSubmit").prop("disabled", false);
+            }
+        });
 
     });
 

@@ -16,5 +16,7 @@ $routes->add('register', new Route('/register'));
 //$routes->add('view-tache', new Route('/view-tache/{id<\d+>?100}'),[],[],[],'www.monsite.fr'); permet de dire que seul monsite peut accéder
 //$routes->add('view-tache', new Route('/view-tache/{id}'));
 
+/*API*/
+$routes->add('createPostApi', new Route('/create-post-api'));
 
 return $routes;

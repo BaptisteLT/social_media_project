@@ -7,13 +7,13 @@
         <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link active" aria-current="page" href="<?= $urlGenerator->generate('index')?>">Home</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link" href="<?= $urlGenerator->generate('login')?>">Login/Register</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
+            <a class="nav-link" href="<?= $urlGenerator->generate('register')?>">My account</a>
             </li>
         </ul>
         <span class="navbar-text">
