@@ -1,24 +1,23 @@
-MIGRATION BASE DE DONNEES:
 
-CREATE TABLE IF NOT EXISTS `userlikepost` (
+CREATE TABLE userlikepost (
   `id_user` int(11) NOT NULL,
   `id_post` int(11) NOT NULL,
   PRIMARY KEY (`id_user`,`id_post`)
-) 
+);
 
-CREATE TABLE IF NOT EXISTS `utilisateur` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+CREATE TABLE utilisateur (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  username varchar(255) DEFAULT NULL,
+  password varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-)
+);
 
-CREATE TABLE IF NOT EXISTS `post` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `comment` varchar(255) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
+CREATE TABLE post (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  comment varchar(255) DEFAULT NULL,
+  created_at datetime DEFAULT NULL,
+  updated_at datetime DEFAULT NULL,
+  created_by int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`)
-)
+);

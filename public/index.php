@@ -13,6 +13,9 @@ require dirname(__DIR__). '/vendor/autoload.php';
 
 require  dirname(__DIR__). '/config.php';
 
+//Démarre la session (durée de vie 24h)
+session_start(['cookie_lifetime' => 86400]);
+
 $request = Request::createFromGlobals();
 $routes = include __DIR__.'/../src/app.php';
 

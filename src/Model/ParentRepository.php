@@ -66,7 +66,7 @@ class ParentRepository
                     var_dump($method);
                     var_dump($attribut);
                     var_dump($value);
-                    die('Poblème dans la convertion du setter. (Vérifier entité)');
+                    die('Problème dans la convertion du setter. (Vérifier entité)');
                 }
             }
             $hydratedElements[] = $newEntity;

@@ -9,7 +9,7 @@ class User{
     public function __contruct($idUser,$idPost)
     {
         $this->idUser = $idUser;
-        $this->idPost = $password;
+        $this->idPost = $idPost;
     }
     
     
