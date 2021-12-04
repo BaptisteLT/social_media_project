@@ -24,6 +24,17 @@ class UserRepository extends ParentRepository{
         return $pdoEntity;
     }
 
+    /*Retourne un utilisateur avec son attribut username*/
+    public function getUser($username)
+    {
+        $query = $this->pdo->prepare("SELECT * FROM ".User::TABLE_NAME." where username = :username");
+        $query->bindValue(':username', $username, PDO::PARAM_STR);
+        $query->execute();
+
+        //FAIRE l'HYDRATATION
+        return parent::hydrate($query->fetchAll(PDO::FETCH_CLASS),new User());
+    }
+
     public function createUser($hashedPassword, $username)
     {
         $stmt = $this->pdo->prepare("INSERT INTO utilisateur (username, password) VALUES (:username, :password)");

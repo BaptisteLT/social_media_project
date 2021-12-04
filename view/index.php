@@ -33,16 +33,18 @@
     <div class="container">
         <div class="justify-content-center">
             <div class="row">
-                <div style="width:100%;">
-                    <div class="d-flex flex-column align-items-end">
+                <div class="d-flex flex-column align-items-end">
                         <button id="new_post" class="btn btn-primary mt-4 ml-auto">Créer un post</button>
-                    </div>
+                </div>
+                <div id="card-container" style="width:100%;">
+
                     <?php foreach($posts as $post) : ?>
-                    <div class="col-12 ">
+                    <div class="col-12" id="<?=$post->getId()?>">
                         <div class="card mt-3 mb-3" style="width: 100%;">
                             <div class="card-body">
                                 <p>Auteur: <?= $post->getCreatedBy()->getUsername() ?></p>
                                 <p class="card-text">Message: <?= $post->getComment() ?></p>
+                                <button onclick="addOrRemoveLike()" class="btn btn-success" id="like-<?= $post->getId()?>">J'aime <?=$post->getNbLikes()?></button>
                             </div>
                         </div>
                     </div>
@@ -56,8 +58,100 @@
 
 <script>
 
+    $(document).on('click', '.btn-success', function(e) {
+
+        let id_post = e.target.id.slice(5);
+        var formData = new FormData(); // Formulaire vide à cet instant
+        formData.append('id_post',id_post);
+        console.log(formData);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "<?= $urlGenerator->generate('likePostApi')?>",
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (data) {
+                data = JSON.parse(data);
+                if(typeof data['erreur'] !== 'undefined') {
+                    alert(data['erreur']);
+                }
+                else
+                {
+                    $("#output").text(data);
+                    console.log("SUCCESS : ", data);
+                    /*On réactive le bouton*/
+                    $("#btnSubmit").prop("disabled", false);
+
+                    /*On crée la div principale*/
+                    mainDiv = document.createElement('div');
+                    mainDiv.classList.add('col-12');
+
+                    /*On crée la carte*/
+                    card = document.createElement('div');
+                    card.classList.add('card', 'mt-3', 'mb-3');
+                    card.style.width = '100%';
+
+                    /*On crée la div du contenu de la carte*/
+                    cardBody = document.createElement('div');
+                    cardBody.classList.add('card-body');
+
+                    /*On ajoute l'auteur*/
+                    auteur = document.createElement('p');
+                    auteur.innerHTML='Auteur: '+data['username'];
+
+                    /*On ajoute le message*/
+                    message = document.createElement('p');
+                    message.innerHTML='Message: '+data['contenu'];
+                    message.classList.add('card-text');
+
+                    cardBody.append(auteur);
+                    cardBody.append(message);
+
+                    card.append(cardBody);
+                    mainDiv.append(card);
+
+
+                    
+                    /*On append au début de la div*/
+                    document.getElementById('card-container').prepend(mainDiv);
+
+                    /*<div class="col-12 ">
+                        <div class="card mt-3 mb-3" style="width: 100%;">
+                            <div class="card-body">
+                                <p>Auteur: $post->getCreatedBy()->getUsername() ?></p>
+                                <p class="card-text">Message: $post->getComment() ?></p>
+                            </div>
+                        </div>
+                    </div>*/
+                }
+            },
+            error: function (e) {
+                $("#output").text(e.responseText);
+                console.log("ERROR : ", e);
+                $("#btnSubmit").prop("disabled", false);
+            }
+        });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*Lors d'un nouveau post on appelle cet ajax*/
     document.getElementById('new_post_form').addEventListener("submit", function(e){
         e.preventDefault();
+        //On désactive le bouton pour éviter les doubles clics
+        $("#btnSubmit").prop("disabled", true);
         //Faire l'ajax ici avec formdata
         var formData = new FormData(e.target);
 
@@ -73,9 +167,59 @@
             contentType: false,
             data: formData,
             success: function (data) {
-                $("#output").text(data);
-                console.log("SUCCESS : ", data);
-                $("#btnSubmit").prop("disabled", false);
+                data = JSON.parse(data);
+                if(typeof data['erreur'] !== 'undefined') {
+                    alert(data['erreur']);
+                }
+                else
+                {
+                    $("#output").text(data);
+                    console.log("SUCCESS : ", data);
+                    /*On réactive le bouton*/
+                    $("#btnSubmit").prop("disabled", false);
+
+                    /*On crée la div principale*/
+                    mainDiv = document.createElement('div');
+                    mainDiv.classList.add('col-12');
+
+                    /*On crée la carte*/
+                    card = document.createElement('div');
+                    card.classList.add('card', 'mt-3', 'mb-3');
+                    card.style.width = '100%';
+
+                    /*On crée la div du contenu de la carte*/
+                    cardBody = document.createElement('div');
+                    cardBody.classList.add('card-body');
+
+                    /*On ajoute l'auteur*/
+                    auteur = document.createElement('p');
+                    auteur.innerHTML='Auteur: '+data['username'];
+
+                    /*On ajoute le message*/
+                    message = document.createElement('p');
+                    message.innerHTML='Message: '+data['contenu'];
+                    message.classList.add('card-text');
+
+                    cardBody.append(auteur);
+                    cardBody.append(message);
+
+                    card.append(cardBody);
+                    mainDiv.append(card);
+
+
+                    
+                    /*On append au début de la div*/
+                    document.getElementById('card-container').prepend(mainDiv);
+
+                    /*<div class="col-12 ">
+                        <div class="card mt-3 mb-3" style="width: 100%;">
+                            <div class="card-body">
+                                <p>Auteur: $post->getCreatedBy()->getUsername() ?></p>
+                                <p class="card-text">Message: $post->getComment() ?></p>
+                            </div>
+                        </div>
+                    </div>*/
+                }
             },
             error: function (e) {
                 $("#output").text(e.responseText);

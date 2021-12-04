@@ -8,12 +8,18 @@ class Post{
     private $updated_at;
     private $created_by;
 
+    private $nbLikes;
+
+    const TABLE_NAME = 'post';
+
     /**
      * Get the value of id
      */ 
-    public function setId()
+    public function setId($id)
     {
-        return $this->id;
+        $this->id = $id;
+
+        return $this;
     }
 
 
@@ -23,6 +29,26 @@ class Post{
     public function getId()
     {
         return $this->id;
+    }
+
+
+    /**
+     * Get the value of nbLikes
+     */ 
+    public function setNbLikes($nbLikes)
+    {
+        $this->nbLikes = $nbLikes;
+
+        return $this;
+    }
+
+
+    /**
+     * Get the value of nbLikes
+     */ 
+    public function getNbLikes()
+    {
+        return $this->nbLikes;
     }
 
     /**

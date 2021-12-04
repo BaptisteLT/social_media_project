@@ -19,12 +19,25 @@ class SecurityController
         if(isset($_POST['username']) && isset($_POST['password'])
         && $_POST['username'] !='' && $_POST['password'] != '')
         {   
-            $hash = $this->userRepository->getUserPassword();
-            $verifiedPassword = password_verify($_POST['password'], $hash);
-
-            if($verifiedPassword===true)
+            //Retourne true si le mot de passe est vérifié, sinon false
+            $passwordVerified = $this->userRepository->getUser($_POST['username']);
+            if($this->userRepository->getUser($_POST['username'])[0] != null)
             {
-                $session['username'] = $_POST['username'];
+                $passwordVerified = $passwordVerified[0]->verifyPassword($_POST['password']);
+            }
+            else
+            {
+                $errorMessage = 'Mauvais identifiant ou mot de passe';
+                return ['error_message'=>$errorMessage];
+            }
+            
+            //Si le mot de passe est vérifié alors on lui crée sa session
+            if($passwordVerified===true)
+            {
+                $iduser=$this->userRepository->getUser($_POST['username'])[0]->getId();
+                $_SESSION['username'] = $_POST['username'];
+                $_SESSION['iduser'] = $iduser;
+                //Puis on le redirige à l'accueil
                 header("Location: http://$_SERVER[HTTP_HOST]/");
                 exit;
             }

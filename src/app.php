@@ -18,5 +18,6 @@ $routes->add('register', new Route('/register'));
 
 /*API*/
 $routes->add('createPostApi', new Route('/create-post-api'));
+$routes->add('likePostApi', new Route('/like-post-api'));
 
 return $routes;

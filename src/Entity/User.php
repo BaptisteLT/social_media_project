@@ -30,6 +30,18 @@ class User{
      */ 
     public function setPassword($password)
     {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Set the value of password
+     *
+     * @return  self
+     */ 
+    public function generateHashedPassword($password)
+    {
         
         $this->password = password_hash($password, PASSWORD_DEFAULT);
 

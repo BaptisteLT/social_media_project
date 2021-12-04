@@ -1,17 +1,18 @@
 <?php
 namespace App\Entity;
 
-class User{
+class UserLikePost{
     private $idUser;
     private $idPost;
     private $id;
+
+    const TABLE_NAME = 'userlikepost';
 
     public function __contruct($idUser,$idPost)
     {
         $this->idUser = $idUser;
         $this->idPost = $idPost;
     }
-    
     
 
     /**
