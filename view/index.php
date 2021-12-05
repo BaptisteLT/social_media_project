@@ -33,26 +33,30 @@
     <div class="container">
         <div class="justify-content-center">
             <div class="row">
-                <div class="d-flex flex-column align-items-end">
-                    <button id="new_post" class="btn btn-primary mt-4 ml-auto">Créer un post</button>
-                </div>
+                <?php if(isset($_SESSION['iduser'])):?>
+                    <div class="d-flex flex-column align-items-end">
+                        <button id="new_post" class="btn btn-primary mt-4 ml-auto">Créer un post</button>
+                    </div>
+                <?php endif ?>
                 <p>Nos 25 posts les plus récents</p>
                 <div id="card-container" style="width:100%;">
                     <?php foreach($posts as $post) : ?>
-                    <div class="col-12" id="<?=$post->getId()?>">
-                        <div class="card mt-3 mb-3" style="width: 100%;">
-                            <div class="card-body">
-                                <div class="d-flex flex-column align-items-end">
-                                    <?php if(isset($_SESSION['iduser']) && $_SESSION['iduser'] == $post->getCreatedBy()->getId()):?>
-                                        <a href="<?= $urlGenerator->generate('deletePost')?>?id=<?=$post->getId()?>&csrf=<?= $_SESSION['token'] ?>" class="btn ml-auto" id="delete-<?= $post->getId()?>">❌</a>
+                        <div class="col-12" id="<?=$post->getId()?>">
+                            <div class="card mt-3 mb-3" style="width: 100%;">
+                                <div class="card-body">
+                                    <div class="d-flex flex-column align-items-end">
+                                        <?php if(isset($_SESSION['iduser']) && $_SESSION['iduser'] == $post->getCreatedBy()->getId()):?>
+                                            <a href="<?= $urlGenerator->generate('deletePost')?>?id=<?=$post->getId()?>&csrf=<?= $_SESSION['token'] ?>" class="btn ml-auto" id="delete-<?= $post->getId()?>">❌</a>
+                                        <?php endif ?>
+                                    </div>
+                                    <p>Auteur: <?= $post->getCreatedBy()->getUsername() ?></p>
+                                    <p class="card-text">Message: <?= $post->getComment() ?></p>
+                                    <?php if(isset($_SESSION['iduser'])):?>
+                                        <button class="btn btn-success" id="like-<?= $post->getId()?>">J'aime <?=$post->getNbLikes()?></button>
                                     <?php endif ?>
                                 </div>
-                                <p>Auteur: <?= $post->getCreatedBy()->getUsername() ?></p>
-                                <p class="card-text">Message: <?= $post->getComment() ?></p>
-                                <button class="btn btn-success" id="like-<?= $post->getId()?>">J'aime <?=$post->getNbLikes()?></button>
                             </div>
                         </div>
-                    </div>
                     <?php endforeach ?>
                 </div>
             </div>
