@@ -34,17 +34,22 @@
         <div class="justify-content-center">
             <div class="row">
                 <div class="d-flex flex-column align-items-end">
-                        <button id="new_post" class="btn btn-primary mt-4 ml-auto">Créer un post</button>
+                    <button id="new_post" class="btn btn-primary mt-4 ml-auto">Créer un post</button>
                 </div>
+                <p>Nos 25 posts les plus récents</p>
                 <div id="card-container" style="width:100%;">
-
                     <?php foreach($posts as $post) : ?>
                     <div class="col-12" id="<?=$post->getId()?>">
                         <div class="card mt-3 mb-3" style="width: 100%;">
                             <div class="card-body">
+                                <div class="d-flex flex-column align-items-end">
+                                    <?php if(isset($_SESSION['iduser']) && $_SESSION['iduser'] == $post->getCreatedBy()->getId()):?>
+                                        <a href="<?= $urlGenerator->generate('deletePost')?>?id=<?=$post->getId()?>&csrf=<?= $_SESSION['token'] ?>" class="btn ml-auto" id="delete-<?= $post->getId()?>">❌</a>
+                                    <?php endif ?>
+                                </div>
                                 <p>Auteur: <?= $post->getCreatedBy()->getUsername() ?></p>
                                 <p class="card-text">Message: <?= $post->getComment() ?></p>
-                                <button onclick="addOrRemoveLike()" class="btn btn-success" id="like-<?= $post->getId()?>">J'aime <?=$post->getNbLikes()?></button>
+                                <button class="btn btn-success" id="like-<?= $post->getId()?>">J'aime <?=$post->getNbLikes()?></button>
                             </div>
                         </div>
                     </div>
@@ -68,69 +73,30 @@
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
-            url: "<?= $urlGenerator->generate('likePostApi')?>",
+            url: "<?= $urlGenerator->generate('likePostApi')?>?csrf=<?= $_SESSION['token']?>",
             processData: false,
             contentType: false,
             data: formData,
             success: function (data) {
                 data = JSON.parse(data);
+                //Si erreur
                 if(typeof data['erreur'] !== 'undefined') {
                     alert(data['erreur']);
                 }
+                //Autrement ok on modifie le DOM
                 else
                 {
                     $("#output").text(data);
                     console.log("SUCCESS : ", data);
-                    /*On réactive le bouton*/
-                    $("#btnSubmit").prop("disabled", false);
-
-                    /*On crée la div principale*/
-                    mainDiv = document.createElement('div');
-                    mainDiv.classList.add('col-12');
-
-                    /*On crée la carte*/
-                    card = document.createElement('div');
-                    card.classList.add('card', 'mt-3', 'mb-3');
-                    card.style.width = '100%';
-
-                    /*On crée la div du contenu de la carte*/
-                    cardBody = document.createElement('div');
-                    cardBody.classList.add('card-body');
-
-                    /*On ajoute l'auteur*/
-                    auteur = document.createElement('p');
-                    auteur.innerHTML='Auteur: '+data['username'];
-
-                    /*On ajoute le message*/
-                    message = document.createElement('p');
-                    message.innerHTML='Message: '+data['contenu'];
-                    message.classList.add('card-text');
-
-                    cardBody.append(auteur);
-                    cardBody.append(message);
-
-                    card.append(cardBody);
-                    mainDiv.append(card);
-
-
                     
-                    /*On append au début de la div*/
-                    document.getElementById('card-container').prepend(mainDiv);
+                    //On met à jour le nombre de likes
+                    button = document.getElementById('like-'+data['id']);
+                    button.innerHTML = "J'aime " + data['nbLikes'];
 
-                    /*<div class="col-12 ">
-                        <div class="card mt-3 mb-3" style="width: 100%;">
-                            <div class="card-body">
-                                <p>Auteur: $post->getCreatedBy()->getUsername() ?></p>
-                                <p class="card-text">Message: $post->getComment() ?></p>
-                            </div>
-                        </div>
-                    </div>*/
                 }
             },
             error: function (e) {
-                $("#output").text(e.responseText);
                 console.log("ERROR : ", e);
-                $("#btnSubmit").prop("disabled", false);
             }
         });
     });
@@ -155,22 +121,22 @@
         //Faire l'ajax ici avec formdata
         var formData = new FormData(e.target);
 
-        //LA
-
         modal.style.display = "none";
 
         $.ajax({
             type: "POST",
             enctype: 'multipart/form-data',
-            url: "<?= $urlGenerator->generate('createPostApi')?>",
+            url: "<?= $urlGenerator->generate('createPostApi')?>?csrf=<?= $_SESSION['token']?>",
             processData: false,
             contentType: false,
             data: formData,
             success: function (data) {
                 data = JSON.parse(data);
+                //Si erreur
                 if(typeof data['erreur'] !== 'undefined') {
                     alert(data['erreur']);
                 }
+                //Autrement on modifie le DOM
                 else
                 {
                     $("#output").text(data);
@@ -191,6 +157,21 @@
                     cardBody = document.createElement('div');
                     cardBody.classList.add('card-body');
 
+
+
+
+                    divCroix = document.createElement('div');
+                    divCroix.classList.add('d-flex','flex-column','align-items-end');
+                    /*On ajoute la croix de suppression*/
+                    croix = document.createElement('a');
+                    croix.setAttribute("href", "<?= $urlGenerator->generate('deletePost')?>?id="+data['id']+"&csrf=<?= $_SESSION['token'] ?>");
+                    croix.classList.add('btn','ml-auto');
+                    croix.id='delete-'+data['id'];
+                    croix.innerHTML = '❌';
+
+                    divCroix.append(croix);
+
+                    
                     /*On ajoute l'auteur*/
                     auteur = document.createElement('p');
                     auteur.innerHTML='Auteur: '+data['username'];
@@ -200,25 +181,23 @@
                     message.innerHTML='Message: '+data['contenu'];
                     message.classList.add('card-text');
 
+                    btn = document.createElement("BUTTON");
+                    btn.innerHTML = "J'aime 0";
+                    btn.classList.add('btn','btn-success');
+                    btn.id = "like-"+data['id'];
+
+                    //On met la croix, l'auteur, le message et le bouton au contenu de la card
+                    cardBody.append(divCroix);
                     cardBody.append(auteur);
                     cardBody.append(message);
+                    cardBody.append(btn);
 
+                    //On ajoute le contenu de la carte à la carte
                     card.append(cardBody);
                     mainDiv.append(card);
 
-
-                    
-                    /*On append au début de la div*/
+                    /*On append au début de la div principale*/
                     document.getElementById('card-container').prepend(mainDiv);
-
-                    /*<div class="col-12 ">
-                        <div class="card mt-3 mb-3" style="width: 100%;">
-                            <div class="card-body">
-                                <p>Auteur: $post->getCreatedBy()->getUsername() ?></p>
-                                <p class="card-text">Message: $post->getComment() ?></p>
-                            </div>
-                        </div>
-                    </div>*/
                 }
             },
             error: function (e) {

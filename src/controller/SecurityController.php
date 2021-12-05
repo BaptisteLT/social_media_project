@@ -45,6 +45,22 @@ class SecurityController
         
     }
 
+    public function logout()
+    {
+        if (isset($_SERVER['HTTP_COOKIE'])) {
+            $cookies = explode(';', $_SERVER['HTTP_COOKIE']);
+            foreach($cookies as $cookie) {
+                $parts = explode('=', $cookie);
+                $name = trim($parts[0]);
+                setcookie($name, '', time()-1000);
+                setcookie($name, '', time()-1000, '/');
+            }
+        }
+        session_destroy();
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit;
+    }
+
     public function register()
     {
         if(isset($_POST['password_confirm']) && isset($_POST['password']) && isset($_POST['username']) &&($_POST['password'] === $_POST['password_confirm']))

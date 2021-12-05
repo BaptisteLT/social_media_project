@@ -1,5 +1,5 @@
 <?php
     use App\controller\PostController;
     $postController = new PostController;
-    $postController->likePostApi();
+    $postController->likePostApi($_GET['csrf']);
 ?>

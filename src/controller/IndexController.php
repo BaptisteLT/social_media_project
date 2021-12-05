@@ -16,6 +16,9 @@ class IndexController
 
     public function index()
     {
+        //On crée un csrf token pour éviter les supressions de posts non désirées.
+        $_SESSION['token'] = md5(uniqid(mt_rand(), true));
+        
         return [
             'posts'=>$posts = $this->postRepository->findAllPosts()
         ];
