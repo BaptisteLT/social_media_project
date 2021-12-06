@@ -28,10 +28,10 @@ CREATE TABLE post (
 ```
 
 ### Configation de lapplication:
-  -dans config.php
+dans config.php
 
-###Démarrer lapplication:
-  -se rendre dans le dossier public et lancer la commande: php -S localhost:8000
+### Démarrer lapplication:
+se rendre dans le dossier public et lancer la commande: php -S localhost:8000
 
 ### Actions réalisables:
 1) Créer un compte
@@ -44,16 +44,16 @@ CREATE TABLE post (
 8) Se déconnecter
 
 ### Librairies utilisées: 
-  -jQuery/Bootstrap
+jQuery/Bootstrap
 
 ### Créer une route:
-  -dans src/app.php
+dans src/app.php
 
 ### Tester le token csrf sur la route:
-  /delete-post?id=ID&csrf=TOKEN
+/delete-post?id=ID&csrf=TOKEN
 
 ### Gestion des erreurs:
-  -En cas derreur, un fichier est généré à la racine du fichier, appelé my-errors.log
+En cas derreur, un fichier est généré à la racine du fichier, appelé my-errors.log
 
 
 
