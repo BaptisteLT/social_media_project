@@ -27,10 +27,10 @@ CREATE TABLE post (
 );
 ```
 
-### Configation de lapplication:
+### Configation de l'application:
 dans config.php
 
-### Démarrer lapplication:
+### Démarrer l'application:
 se rendre dans le dossier public et lancer la commande: php -S localhost:8000
 
 ### Actions réalisables:
@@ -53,7 +53,7 @@ dans src/app.php
 /delete-post?id=ID&csrf=TOKEN
 
 ### Gestion des erreurs:
-En cas derreur, un fichier est généré à la racine du fichier, appelé my-errors.log
+En cas d'erreur, un fichier est généré à la racine du dossier, appelé my-errors.log
 
 
 
