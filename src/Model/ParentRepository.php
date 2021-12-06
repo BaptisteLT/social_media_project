@@ -71,11 +71,20 @@ class ParentRepository
                     }
                     else
                     {
-                        //var_dump($newEntity);
-                        var_dump($method);
-                        var_dump($attribut);
-                        var_dump($value);
+                        // error message to be logged
+                        $error_message = 'Problème dans la convertion du setter. (Vérifier entité)';
+                        // path of the log file where errors need to be logged
+                        $log_file = "../my-errors.log";
+                        // setting error logging to be active
+                        ini_set("log_errors", TRUE); 
+                        // setting the logging file in php.ini
+                        ini_set('error_log', $log_file);
+                        // logging the error
+                        error_log($error_message);
                         die('Problème dans la convertion du setter. (Vérifier entité)');
+
+
+
                     }
                 }
                 //trouver pourquoi ça rempalce le hydradelements

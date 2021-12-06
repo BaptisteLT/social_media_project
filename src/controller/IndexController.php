@@ -19,8 +19,11 @@ class IndexController
         //On crée un csrf token pour éviter les supressions de posts non désirées.
         $_SESSION['token'] = md5(uniqid(mt_rand(), true));
         
+        $posts = $this->postRepository->findAllPosts();
+
         return [
-            'posts'=>$posts = $this->postRepository->findAllPosts()
+            'posts'=>$posts,
+            'nbPosts' =>count($posts) 
         ];
     }
 }

@@ -4,6 +4,7 @@
     $indexController = new IndexController;
     $vars = $indexController->index();
     $posts=$vars['posts'];
+    $nbPosts = $vars['nbPosts'];
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +39,7 @@
                         <button id="new_post" class="btn btn-primary mt-4 ml-auto">Créer un post</button>
                     </div>
                 <?php endif ?>
-                <p>Nos 25 posts les plus récents</p>
+                <p>Nos <?= $nbPosts ?> post<?= $nbPosts >= 1 ? 's' : '' ?> les plus récents</p>
                 <div id="card-container" style="width:100%;">
                     <?php foreach($posts as $post) : ?>
                         <div class="col-12" id="<?=$post->getId()?>">

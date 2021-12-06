@@ -37,8 +37,16 @@ class UserRepository extends ParentRepository{
 
     public function createUser($hashedPassword, $username)
     {
-        $stmt = $this->pdo->prepare("INSERT INTO utilisateur (username, password) VALUES (:username, :password)");
+        $stmt = $this->pdo->prepare("INSERT INTO ".User::TABLE_NAME." (username, password) VALUES (:username, :password)");
         $stmt->bindParam(':username', $username);
+        $stmt->bindParam(':password', $hashedPassword);
+        $stmt->execute();
+    }
+
+    public function editUserPassword($hashedPassword, $userid)
+    {
+        $stmt = $this->pdo->prepare("UPDATE ".User::TABLE_NAME." SET password = :password WHERE id = :userid");
+        $stmt->bindParam(':userid', $userid);
         $stmt->bindParam(':password', $hashedPassword);
         $stmt->execute();
     }

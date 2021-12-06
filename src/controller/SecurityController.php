@@ -16,33 +16,91 @@ class SecurityController
 
     public function login()
     {
-        if(isset($_POST['username']) && isset($_POST['password'])
-        && $_POST['username'] !='' && $_POST['password'] != '')
-        {   
-            //Retourne true si le mot de passe est vérifié, sinon false
-            $passwordVerified = $this->userRepository->getUser($_POST['username']);
-            if($this->userRepository->getUser($_POST['username'])[0] != null)
-            {
-                $passwordVerified = $passwordVerified[0]->verifyPassword($_POST['password']);
-            }
-            else
-            {
-                $errorMessage = 'Mauvais identifiant ou mot de passe';
-                return ['error_message'=>$errorMessage];
-            }
-            
-            //Si le mot de passe est vérifié alors on lui crée sa session
-            if($passwordVerified===true)
-            {
-                $iduser=$this->userRepository->getUser($_POST['username'])[0]->getId();
-                $_SESSION['username'] = $_POST['username'];
-                $_SESSION['iduser'] = $iduser;
-                //Puis on le redirige à l'accueil
-                header("Location: http://$_SERVER[HTTP_HOST]/");
-                exit;
+        //Si l'utilisateur n'est pas déjà connecté avec un compte
+        if(!isset($_SESSION['iduser']))
+        {
+            if(isset($_POST['username']) && isset($_POST['password'])
+            && $_POST['username'] !='' && $_POST['password'] != '')
+            {   
+                //Retourne true si le mot de passe est vérifié, sinon false
+                $passwordVerified = $this->userRepository->getUser($_POST['username']);
+                if($this->userRepository->getUser($_POST['username'])[0] != null)
+                {
+                    $passwordVerified = $passwordVerified[0]->verifyPassword($_POST['password']);
+                }
+                else
+                {
+                    $errorMessage = 'Mauvais identifiant ou mot de passe';
+                    return ['error_message'=>$errorMessage];
+                }
+                
+                //Si le mot de passe est vérifié alors on lui crée sa session
+                if($passwordVerified===true)
+                {
+                    $iduser=$this->userRepository->getUser($_POST['username'])[0]->getId();
+                    $_SESSION['username'] = $_POST['username'];
+                    $_SESSION['iduser'] = $iduser;
+                    //Puis on le redirige à l'accueil
+                    header("Location: http://$_SERVER[HTTP_HOST]/");
+                    exit;
+                }
+                else
+                {
+                    $errorMessage = 'Mauvais identifiant ou mot de passe';
+                    return ['error_message'=>$errorMessage];
+                }
             }
         }
+        else
+        {
+            header('Location: /');
+            exit;
+        }
         
+    }
+
+    //Changement de mot de passe
+    public function myAccount()
+    {
+        if(isset($_SESSION['username']))
+        {
+            if(isset($_POST['current_password']) && isset($_POST['new_password']) && isset($_POST['new_password_confirm']) && ($_POST['new_password_confirm'] === $_POST['new_password']))
+            {
+                if(strlen($_POST['new_password']) >= 7)
+                {
+                    $passwordVerified = $this->userRepository->getUser($_SESSION['username']);
+                    if($this->userRepository->getUser($_SESSION['username'])[0] != null)
+                    {
+                        $passwordVerified = $passwordVerified[0]->verifyPassword($_POST['current_password']);
+                    }
+                    else
+                    {
+                        $errorMessage = 'Mauvais mot de passe';
+                        return ['error_message'=>$errorMessage];
+                    }
+                    
+                    //Si le mot de passe est vérifié alors on lui crée sa session
+                    if($passwordVerified===true)
+                    {
+                        $hashedPassword = password_hash($_POST['new_password'], PASSWORD_DEFAULT);
+                        $this->userRepository->editUserPassword($hashedPassword,$_SESSION['iduser']);
+                        //Puis on le redirige à l'accueil
+                        header("Location: /login");
+                        exit;
+                    }
+                    else
+                    {
+                        $errorMessage = 'Mauvais mot de passe';
+                        return ['error_message'=>$errorMessage];
+                    }
+                }
+                else
+                {
+                    $errorMessage = 'Votre nouveau mot de passe doit faire au moins 7 caractères.';
+                    return ['error_message'=>$errorMessage];
+                }
+            }
+        }
     }
 
     public function logout()
@@ -63,37 +121,45 @@ class SecurityController
 
     public function register()
     {
-        if(isset($_POST['password_confirm']) && isset($_POST['password']) && isset($_POST['username']) &&($_POST['password'] === $_POST['password_confirm']))
+        //Si l'utilisateur n'est pas déjà connecté avec un compte
+        if(!isset($_SESSION['iduser']))
         {
-            if(strlen($_POST['password']) >= 7)
+            if(isset($_POST['password_confirm']) && isset($_POST['password']) && isset($_POST['username']) &&($_POST['password'] === $_POST['password_confirm']))
             {
-                if($this->userRepository->verifyUserExists($_POST['username']) === false)
+                if(strlen($_POST['password']) >= 7)
                 {
-                    $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
-                    
-                    $this->userRepository->createUser($hashedPassword,$_POST['username']);
-                    
-                    header("Location: http://$_SERVER[HTTP_HOST]/login");
-                    exit;
+                    if($this->userRepository->verifyUserExists($_POST['username']) === false)
+                    {
+                        $hashedPassword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+                        
+                        $this->userRepository->createUser($hashedPassword,$_POST['username']);
+                        
+                        header("Location: http://$_SERVER[HTTP_HOST]/login");
+                        exit;
+                    }
+                    else
+                    {
+                        $errorMessage = 'User already exists';
+                        return ['error_message'=>$errorMessage];
+                    }
+
                 }
                 else
                 {
-                    $errorMessage = 'User already exists';
+                    $errorMessage = 'Password should be longer or equal to 7 characters.';
                     return ['error_message'=>$errorMessage];
                 }
-
             }
             else
             {
-                $errorMessage = 'Password should be longer or equal to 7 characters.';
+                $errorMessage = 'Username or password empty, or passwords don\'t match.';
                 return ['error_message'=>$errorMessage];
             }
         }
         else
         {
-            $errorMessage = 'Username or password empty, or passwords don\'t match.';
-            return ['error_message'=>$errorMessage];
+            header('Location: /');
+            exit;
         }
-
     }
 }

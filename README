@@ -1,3 +1,6 @@
+# Documentation du projet:
+
+### Tables:
 
 CREATE TABLE userlikepost (
   `id_user` int(11) NOT NULL,
@@ -21,3 +24,39 @@ CREATE TABLE post (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`)
 );
+
+### Configation de lapplication:
+  -dans config.php
+
+### Démarrer lapplication:
+  -se rendre dans le dossier public et lancer la commande: php -S localhost:8000
+
+### Actions réalisables:
+1) Créer un compte
+2) Se connecter
+3) Modifier son mot de passe
+4) Voir les posts
+5) Créer un post
+6) Liker un post
+7) Supprimer un post
+8) Se déconnecter
+
+### Librairies utilisées: 
+  -jQuery/Bootstrap
+
+### Créer une route:
+  -dans src/app.php
+
+### Tester le token csrf sur la route:
+  /delete-post?id=ID&csrf=TOKEN
+
+### Gestion des erreurs:
+  -En cas derreur, un fichier est généré à la racine du fichier, appelé my-errors.log
+
+
+
+
+
+
+
+

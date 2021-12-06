@@ -14,6 +14,7 @@ $routes->add('index', new Route('/'));
 $routes->add('login', new Route('/login'));
 $routes->add('register', new Route('/register'));
 $routes->add('logout', new Route('/logout'));
+$routes->add('myaccount', new Route('/myaccount'));
 
 $routes->add('deletePost', new Route('/delete-post'));
 

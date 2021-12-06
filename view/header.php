@@ -9,15 +9,15 @@
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="<?= $urlGenerator->generate('index')?>">Home</a>
             </li>
+            <?php if(!isset($_SESSION['iduser'])):?>
             <li class="nav-item">
                 <a class="nav-link" href="<?= $urlGenerator->generate('login')?>">Login/Register</a>
             </li>
-            <?php if(isset($_SESSION['iduser'])):?>
-            <li class="nav-item">
-                <a class="nav-link" href="<?= $urlGenerator->generate('register')?>">My account</a>
-            </li>
             <?php endif ?>
             <?php if(isset($_SESSION['iduser'])):?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= $urlGenerator->generate('myaccount')?>">My account</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?= $urlGenerator->generate('logout')?>">Logout</a>
             </li>
