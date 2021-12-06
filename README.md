@@ -2,6 +2,7 @@
 
 ### Tables:
 
+```
 CREATE TABLE userlikepost (
   `id_user` int(11) NOT NULL,
   `id_post` int(11) NOT NULL,
@@ -24,6 +25,7 @@ CREATE TABLE post (
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`)
 );
+```
 
 ### Configation de lapplication:
   -dans config.php
